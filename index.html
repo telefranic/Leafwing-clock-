@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>🌿 LeafWing Clock 🌿</title>
+  <title>🌿 LeafWing Vine Clock 🌿</title>
+
+  <!-- Vine-style font -->
+  <link href="https://fonts.googleapis.com/css2?family=Ewert&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+
   <style>
     body {
       margin: 0;
@@ -10,11 +14,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: radial-gradient(circle at top,
-        #2e7d32,
-        #1b5e20,
-        #0b3d1a);
-      font-family: "Georgia", serif;
+      background: radial-gradient(circle at top, #2e7d32, #1b5e20, #0b3d1a);
       overflow: hidden;
     }
 
@@ -22,10 +22,9 @@
       position: absolute;
       width: 18px;
       height: 18px;
-      background: rgba(140, 220, 140, 0.75);
+      background: rgba(140, 220, 140, 0.8);
       border-radius: 0 100% 0 100%;
       animation: drift linear infinite;
-      filter: blur(0.3px);
     }
 
     @keyframes drift {
@@ -41,57 +40,81 @@
     }
 
     .clock {
-      background: rgba(20, 60, 30, 0.75);
+      background: rgba(18, 55, 28, 0.8);
       border: 3px solid #7cb342;
-      border-radius: 22px;
-      padding: 40px 70px;
+      border-radius: 24px;
+      padding: 45px 80px;
       text-align: center;
-      box-shadow: 0 0 30px rgba(124, 179, 66, 0.7);
-      z-index: 10;
+      box-shadow: 0 0 35px rgba(124, 200, 120, 0.9);
+      z-index: 5;
     }
 
     .time {
-      font-size: 64px;
-      color: #e8f5e9;
-      text-shadow: 0 0 12px rgba(180, 255, 180, 0.9);
+      font-family: "Uncial Antiqua", serif;
+      font-size: 68px;
+      color: #e6ffe6;
+      letter-spacing: 4px;
+      text-shadow:
+        0 0 6px #8bc34a,
+        0 0 14px #558b2f,
+        0 0 24px #33691e;
+    }
+
+    .ampm {
+      font-family: "Ewert", cursive;
+      font-size: 22px;
+      margin-top: 8px;
+      color: #c5e1a5;
+      text-shadow: 0 0 10px #7cb342;
+      letter-spacing: 3px;
     }
 
     .subtitle {
-      margin-top: 10px;
-      font-size: 18px;
+      margin-top: 12px;
+      font-size: 16px;
       color: #aed581;
       letter-spacing: 1px;
+      font-family: Georgia, serif;
     }
   </style>
 </head>
 <body>
 
   <div class="clock">
-    <div class="time" id="time">00:00:00</div>
+    <div class="time" id="time">12:00:00</div>
+    <div class="ampm" id="ampm">AM</div>
     <div class="subtitle">LeafWing Approved 🌿</div>
   </div>
 
   <script>
-    // Clock
+    // Clock with AM/PM
     function updateClock() {
       const now = new Date();
-      const h = String(now.getHours()).padStart(2, "0");
-      const m = String(now.getMinutes()).padStart(2, "0");
-      const s = String(now.getSeconds()).padStart(2, "0");
-      document.getElementById("time").textContent = `${h}:${m}:${s}`;
+      let hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const seconds = String(now.getSeconds()).padStart(2, "0");
+      const ampm = hours >= 12 ? "PM" : "AM";
+
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+
+      document.getElementById("time").textContent =
+        `${hours}:${minutes}:${seconds}`;
+      document.getElementById("ampm").textContent = ampm;
     }
+
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Generate LOTS of leaves
-    const leafCount = 40; // ← increase this for EVEN MORE leaves 🌿🌿🌿
+    // MANY floating leaves 🌿
+    const leafCount = 80;
 
     for (let i = 0; i < leafCount; i++) {
       const leaf = document.createElement("div");
       leaf.className = "leaf";
       leaf.style.left = Math.random() * 100 + "vw";
-      leaf.style.animationDuration = (12 + Math.random() * 15) + "s";
-      leaf.style.animationDelay = Math.random() * 10 + "s";
+      leaf.style.animationDuration = (10 + Math.random() * 18) + "s";
+      leaf.style.animationDelay = Math.random() * 12 + "s";
       leaf.style.transform = `rotate(${Math.random() * 360}deg)`;
       document.body.appendChild(leaf);
     }
