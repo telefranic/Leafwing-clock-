@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>🌿 LeafWing Vine Clock 🌿</title>
 
-  <!-- Vine-style font -->
+  <!-- Vine fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Ewert&family=Uncial+Antiqua&display=swap" rel="stylesheet">
 
   <style>
@@ -18,6 +18,7 @@
       overflow: hidden;
     }
 
+    /* Floating leaves */
     .leaf {
       position: absolute;
       width: 18px;
@@ -39,16 +40,85 @@
       }
     }
 
+    /* Clock container */
+    .clock-wrapper {
+      position: relative;
+    }
+
     .clock {
-      background: rgba(18, 55, 28, 0.8);
+      background: rgba(18, 55, 28, 0.85);
       border: 3px solid #7cb342;
-      border-radius: 24px;
+      border-radius: 26px;
       padding: 45px 80px;
       text-align: center;
       box-shadow: 0 0 35px rgba(124, 200, 120, 0.9);
-      z-index: 5;
+      z-index: 3;
+      position: relative;
     }
 
+    /* Vines */
+    .vine {
+      position: absolute;
+      border: 3px solid transparent;
+      border-radius: 30px;
+      pointer-events: none;
+      z-index: 2;
+      animation: grow 6s ease-in-out infinite alternate;
+      box-shadow: 0 0 12px rgba(124, 200, 120, 0.6);
+    }
+
+    .vine::before {
+      content: "";
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: #7cb342;
+      border-radius: 0 100% 0 100%;
+      transform: rotate(45deg);
+    }
+
+    .vine.top {
+      width: 110%;
+      height: 120%;
+      top: -10%;
+      left: -5%;
+      border-top: 4px solid #558b2f;
+    }
+
+    .vine.bottom {
+      width: 110%;
+      height: 120%;
+      bottom: -10%;
+      left: -5%;
+      border-bottom: 4px solid #33691e;
+    }
+
+    .vine.left {
+      width: 120%;
+      height: 110%;
+      top: -5%;
+      left: -10%;
+      border-left: 4px solid #689f38;
+    }
+
+    .vine.right {
+      width: 120%;
+      height: 110%;
+      top: -5%;
+      right: -10%;
+      border-right: 4px solid #8bc34a;
+    }
+
+    @keyframes grow {
+      from {
+        transform: scale(0.98) rotate(-1deg);
+      }
+      to {
+        transform: scale(1.02) rotate(1deg);
+      }
+    }
+
+    /* Time text */
     .time {
       font-family: "Uncial Antiqua", serif;
       font-size: 68px;
@@ -80,41 +150,46 @@
 </head>
 <body>
 
-  <div class="clock">
-    <div class="time" id="time">12:00:00</div>
-    <div class="ampm" id="ampm">AM</div>
-    <div class="subtitle">LeafWing Approved 🌿</div>
+  <div class="clock-wrapper">
+    <div class="vine top"></div>
+    <div class="vine bottom"></div>
+    <div class="vine left"></div>
+    <div class="vine right"></div>
+
+    <div class="clock">
+      <div class="time" id="time">12:00:00</div>
+      <div class="ampm" id="ampm">AM</div>
+      <div class="subtitle">LeafWing Approved 🌿</div>
+    </div>
   </div>
 
   <script>
-    // Clock with AM/PM
+    // Clock logic (AM / PM)
     function updateClock() {
       const now = new Date();
-      let hours = now.getHours();
-      const minutes = String(now.getMinutes()).padStart(2, "0");
-      const seconds = String(now.getSeconds()).padStart(2, "0");
-      const ampm = hours >= 12 ? "PM" : "AM";
+      let h = now.getHours();
+      const m = String(now.getMinutes()).padStart(2, "0");
+      const s = String(now.getSeconds()).padStart(2, "0");
+      const ampm = h >= 12 ? "PM" : "AM";
 
-      hours = hours % 12;
-      hours = hours ? hours : 12;
+      h = h % 12;
+      h = h ? h : 12;
 
-      document.getElementById("time").textContent =
-        `${hours}:${minutes}:${seconds}`;
+      document.getElementById("time").textContent = `${h}:${m}:${s}`;
       document.getElementById("ampm").textContent = ampm;
     }
 
     setInterval(updateClock, 1000);
     updateClock();
 
-    // MANY floating leaves 🌿
-    const leafCount = 80;
-
+    // Extra leaves 🌿🌿🌿
+    const leafCount = 90;
     for (let i = 0; i < leafCount; i++) {
       const leaf = document.createElement("div");
       leaf.className = "leaf";
       leaf.style.left = Math.random() * 100 + "vw";
-      leaf.style.animationDuration = (10 + Math.random() * 18) + "s";
-      leaf.style.animationDelay = Math.random() * 12 + "s";
+      leaf.style.animationDuration = (10 + Math.random() * 20) + "s";
+      leaf.style.animationDelay = Math.random() * 15 + "s";
       leaf.style.transform = `rotate(${Math.random() * 360}deg)`;
       document.body.appendChild(leaf);
     }
